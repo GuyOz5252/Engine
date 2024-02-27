@@ -1,8 +1,11 @@
 package com.project;
 
+import com.project.input.keyboard.IKeyboardListener;
 import com.project.input.mouse.IMouseListener;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+
+import java.util.Objects;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -12,19 +15,21 @@ public class Window {
 
     private Loop _loop;
 
-    private int _width;
-    private int _height;
-    private String _title;
+    private final int _width;
+    private final int _height;
+    private final String _title;
 
     private final IMouseListener _mouseListener;
+    private final IKeyboardListener _keyboardListener;
 
     private long _glfwWindow;
 
-    public Window(int width, int height, String title, IMouseListener mouseListener) {
+    public Window(int width, int height, String title, IMouseListener mouseListener, IKeyboardListener keyboardListener) {
         _width = width;
         _height = height;
         _title = title;
         _mouseListener = mouseListener;
+        _keyboardListener = keyboardListener;
     }
 
     public void run() {
@@ -35,7 +40,7 @@ public class Window {
         glfwDestroyWindow(_glfwWindow);
 
         glfwTerminate();
-        glfwSetErrorCallback(null).free();
+        Objects.requireNonNull(glfwSetErrorCallback(null)).free();
     }
 
     private void initialize() {
@@ -58,6 +63,7 @@ public class Window {
         glfwSetCursorPosCallback(_glfwWindow, _mouseListener::mousePositionCallback);
         glfwSetMouseButtonCallback(_glfwWindow, _mouseListener::mouseButtonCallback);
         glfwSetScrollCallback(_glfwWindow, _mouseListener::mouseScrollCallback);
+        glfwSetKeyCallback(_glfwWindow, _keyboardListener::keyCallback);
 
         glfwMakeContextCurrent(_glfwWindow);
 

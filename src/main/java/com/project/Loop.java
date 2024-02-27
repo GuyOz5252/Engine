@@ -1,13 +1,11 @@
 package com.project;
 
-import org.lwjgl.opengl.GL;
-
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Loop {
 
-    private long _glfwWindow;
+    private final long _glfwWindow;
 
     public Loop(long glfwWindow) {
         _glfwWindow = glfwWindow;

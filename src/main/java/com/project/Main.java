@@ -1,5 +1,6 @@
 package com.project;
 
+import com.project.input.keyboard.KeyboardListener;
 import com.project.input.mouse.MouseListener;
 
 public class Main {
@@ -8,7 +9,8 @@ public class Main {
                 1600,
                 900,
                 "Engine",
-                new MouseListener()
+                new MouseListener(),
+                new KeyboardListener()
         );
         window.run();
     }

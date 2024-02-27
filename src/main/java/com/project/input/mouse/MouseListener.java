@@ -1,26 +1,31 @@
 package com.project.input.mouse;
 
+import com.project.input.mouse.IMouseListener;
 import com.project.utils.Utils;
-import lombok.Data;
 import lombok.Getter;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
-import org.lwjgl.system.windows.MOUSEINPUT;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 public class MouseListener implements IMouseListener {
 
+    @Getter
     private double _scrollX;
+    @Getter
     private double _scrollY;
+    @Getter
     private double _xPosition;
+    @Getter
     private double _yPosition;
+    @Getter
     private double _lastXPosition;
+    @Getter
     private double _lastYPosition;
-    private boolean[] _mouseButtonsPressed;
+    private final boolean[] _mouseButtonsPressed;
+    @Getter
     private boolean _isDragging;
 
-    private Utils _utils;
+    private final Utils _utils;
 
     public MouseListener() {
         _scrollX = 0;
