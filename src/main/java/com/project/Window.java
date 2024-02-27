@@ -1,17 +1,11 @@
 package com.project;
 
+import com.project.input.mouse.IMouseListener;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.system.MemoryStack;
-
-import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
@@ -22,12 +16,15 @@ public class Window {
     private int _height;
     private String _title;
 
+    private final IMouseListener _mouseListener;
+
     private long _glfwWindow;
 
-    public Window(int width, int height, String title) {
+    public Window(int width, int height, String title, IMouseListener mouseListener) {
         _width = width;
         _height = height;
         _title = title;
+        _mouseListener = mouseListener;
     }
 
     public void run() {
@@ -42,7 +39,7 @@ public class Window {
     }
 
     private void initialize() {
-        GLFWErrorCallback.createPrint(System.err).set();
+        GLFWErrorCallback.createPrint(System.out).set();
 
         if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
@@ -57,6 +54,10 @@ public class Window {
         if (_glfwWindow == NULL) {
             throw new IllegalStateException("Failed to create GLFW window");
         }
+
+        glfwSetCursorPosCallback(_glfwWindow, _mouseListener::mousePositionCallback);
+        glfwSetMouseButtonCallback(_glfwWindow, _mouseListener::mouseButtonCallback);
+        glfwSetScrollCallback(_glfwWindow, _mouseListener::mouseScrollCallback);
 
         glfwMakeContextCurrent(_glfwWindow);
 
